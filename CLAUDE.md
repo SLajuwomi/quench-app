@@ -3,136 +3,171 @@
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview
-This is a React Native hydration tracking app called "Quench" built with Expo Router and NativeWind (Tailwind CSS for React Native). The app features a sophisticated onboarding flow with premium UI design patterns.
+
+**Quench** is a SwiftUI hydration tracking app with an interactive avatar that reflects the user's hydration level. The app features a complete 8-screen onboarding flow and is designed with a minimal, clean aesthetic inspired by the Brainrot app.
 
 ## Development Commands
 
-### Essential Commands
-- `npm start` - Start the Expo development server
-- `npm run ios` - Run on iOS simulator
-- `npm run android` - Run on Android emulator
-- `npm run web` - Run on web browser
+### Build and Run
+```bash
+# Open in Xcode
+open quench-swift/quench-swift.xcodeproj
 
-### Code Quality
-- `npm run lint` - Run ESLint and Prettier checks
-- `npm run format` - Auto-fix ESLint issues and format code with Prettier
-- `npm run prebuild` - Generate native code for production builds
-
-## Technology Stack & Architecture
-
-### Core Technologies
-- **Expo SDK**: 53.x with Expo Router (~5.1.3) for file-based routing
-- **NativeWind**: 4.x for Tailwind CSS styling in React Native
-- **TypeScript**: 5.8.3 with strict mode enabled
-- **React Native**: 0.79.5 with React 19.0.0
-- **Expo Linear Gradient**: 14.1.5 for gradient backgrounds
-
-### Key Configuration Files
-- **package.json**: `"main": "expo-router/entry"` (critical for Expo Router)
-- **app.json**: Contains `"scheme": "quench-app"` and expo-router plugin
-- **metro.config.js**: Configured with `isCSSEnabled: true` and NativeWind integration
-- **babel.config.js**: Uses `babel-preset-expo` with `jsxImportSource: 'nativewind'`
-- **tailwind.config.js**: Content paths include `./app/**/*.{js,jsx,ts,tsx}`
-
-### App Architecture
-The app uses Expo Router's file-based routing system:
-
-```
-app/
-├── _layout.tsx              # Root layout with Stack navigation
-├── index.tsx                # Welcome screen with onboarding CTA
-└── onboarding/
-    ├── _layout.tsx          # Nested onboarding layout
-    └── 01_problem_hook.tsx  # First onboarding screen
+# Build and run from Xcode (⌘+R)
+# No command-line build tools configured - use Xcode for development
 ```
 
-### Routing Structure
-- **Root Layout** (`app/_layout.tsx`): SafeAreaProvider wrapper with Stack navigation
-- **Welcome Screen** (`app/index.tsx`): Entry point with "Start Onboarding" button
-- **Onboarding Flow** (`app/onboarding/`): Nested stack with individual screens
-
-### Styling Approach
-- **NativeWind**: Primary styling using `className` prop with Tailwind utilities
-- **Custom Components**: Reusable UI components like `RiseStyleButton` with layered shadow effects
-- **LinearGradient**: Used for premium background effects
-- **Design System**: Consistent color palette (blue-500, cyan-50, slate-800)
-
-## Critical Configuration Requirements
-
-### Metro Configuration
-Must include `isCSSEnabled: true` for Expo Router + NativeWind compatibility:
-```javascript
-const config = getDefaultConfig(__dirname, {
-  isCSSEnabled: true,
-});
+### Testing
+```bash
+# Run tests from Xcode (⌘+U)
+# No command-line test runner configured
 ```
 
-### Babel Configuration
-Requires NativeWind-specific JSX import source:
-```javascript
-presets: [
-  ['babel-preset-expo', { jsxImportSource: 'nativewind' }], 
-  'nativewind/babel'
-]
-```
+## Architecture
 
-### TypeScript Configuration
-Must include `nativewind-env.d.ts` for type definitions:
-```json
-{
-  "include": ["**/*.ts", "**/*.tsx", "nativewind-env.d.ts"]
+### Project Structure
+- `quench-swift/` - Main SwiftUI application
+  - `quench_swiftApp.swift` - App entry point, launches OnboardingFlow
+  - `OnboardingFlow.swift` - Navigation controller managing 8-screen onboarding sequence
+  - Individual view files for each onboarding screen
+  - `Assets.xcassets/` - Avatar states and app icons
+
+### Navigation System
+- Uses `NavigationStack` with `NavigationPath` for state management
+- `OnboardingScreen` enum defines all 8 screens
+- Custom navigation with back buttons and progress indicators
+- System navigation bar is hidden (`.navigationBarHidden(true)`)
+
+### Onboarding Flow (8 Screens)
+1. **Welcome** (`ContentView.swift`) - Welcome message with 180x180 avatar
+2. **Meet Quench** (`MeetQuenchView.swift`) - Introduces hydration buddy concept
+3. **Avatar States** (`AvatarStatesView.swift`) - Interactive slider showing 6 avatar states
+4. **Reason Selection** (`ReasonSelectionView.swift`) - Motivation selection with radio buttons
+5. **Did You Know** (`DidYouKnowView.swift`) - Educational facts in 2x2 grid
+6. **Current Water Intake** (`CurrentWaterIntakeView.swift`) - Interactive slider with feedback
+7. **Impact Visualization** (`ImpactVisualizationView.swift`) - Health impact breakdown
+8. **Goal Calculation** (`GoalCalculationView.swift`) - Personal data input form
+
+### Design System
+
+#### Color Palette (Exact RGB Values)
+- Background: `Color(red: 0.9, green: 0.95, blue: 1.0)`
+- Dark text: `Color(red: 0.11, green: 0.11, blue: 0.12)`
+- Light text: `Color(red: 0.43, green: 0.43, blue: 0.45)`
+- Blue accent: `Color(red: 0.0, green: 0.48, blue: 1.0)`
+
+#### Typography Standards
+- Welcome heading: 32pt bold
+- Other headings: 28pt bold
+- Subtitles: 17pt regular
+- Button text: 17pt medium
+- All headings must be lowercase
+- Use `.foregroundStyle()` not `.foregroundColor()`
+
+#### Avatar Sizing
+- Welcome screen: 180x180
+- All other screens: 120x120
+
+#### Button Implementation (EXACT)
+```swift
+VStack(spacing: 0) {
+    Button(action: {}) {
+        Text("continue")
+            .font(.system(size: 17, weight: .medium, design: .default))
+            .foregroundStyle(.white)
+            .frame(maxWidth: .infinity)
+            .frame(height: 50)
+            .background(Color(red: 0.0, green: 0.48, blue: 1.0))
+            .cornerRadius(12)
+    }
+    .padding(.horizontal, 20)
+    .padding(.bottom, 34)
 }
 ```
 
+#### Progress Bar Implementation
+```swift
+ProgressView(value: SCREEN_NUMBER, total: 8.0)
+    .progressViewStyle(.linear)
+    .tint(Color(red: 0.0, green: 0.48, blue: 1.0))
+    .scaleEffect(x: 1, y: 0.8)
+```
+
+### Technical Notes
+
+#### Cursor Rules Integration
+- Comprehensive UI consistency rules defined in `.cursor/rules/quench-onboarding.mdc`
+- Exact styling specifications to maintain visual consistency
+- Reference implementations in `ContentView.swift` and `MeetQuenchView.swift`
+
+#### State Management
+- Avatar states use range matching (0.5...0.7) instead of exact floating-point comparison
+- Form validation disables continue buttons until required fields are completed
+- Navigation state managed through `NavigationPath`
+
+#### Key Components
+- `FactCard` - Reusable component for educational content
+- `InputField` - Custom input field with suffix labels
+- Interactive sliders with real-time feedback and color-coded states
+
 ## Development Guidelines
 
-### File Organization
-- Use descriptive names for screens (e.g., `01_problem_hook.tsx`)
-- Follow Expo Router conventions (`_layout.tsx` for navigation)
-- Keep assets organized in `assets/images/` directory
+### UI Consistency Rules
+1. **NO DEVIATIONS** from button implementation - copy exact code from design system
+2. **NO DEVIATIONS** from progress bar styling - use exact RGB values
+3. **CONSISTENT** avatar sizing based on screen type (180px welcome, 120px others)
+4. **CONSISTENT** spacing: main VStack (0), content VStack (24), text groups (12)
+5. All text must use `.multilineTextAlignment(.center)` and `.lineLimit(nil)` for multi-line
 
-### Component Patterns
-- Import required React Native components explicitly
-- Use `SafeAreaView` for screen-level components
-- Leverage NativeWind's `className` prop for all styling
-- Create reusable UI components with consistent design patterns
+### Navigation Pattern
+```swift
+// Continue action
+navigationPath.append(OnboardingScreen.nextScreen)
 
-### Navigation
-- Use Expo Router's `Link` component for navigation
-- Implement proper back button functionality
-- Configure `headerShown: false` for custom headers
+// Back action  
+navigationPath.removeLast()
+```
 
-## Common Issues & Solutions
+### Layout Template
+```swift
+ZStack {
+    Color(red: 0.9, green: 0.95, blue: 1.0).ignoresSafeArea()
+    
+    VStack(spacing: 0) {
+        // Top section (back button + progress)
+        HStack(spacing: 16) { ... }
+            .padding(.horizontal, 20)
+            .padding(.top, 20)
+        
+        Spacer()
+        
+        // Center content
+        VStack(spacing: 24) { ... }
+        
+        Spacer()
+        
+        // Bottom button
+        VStack(spacing: 0) { ... }
+    }
+}
+```
 
-### "Unable to resolve ../../App" Error
-- **Cause**: Incorrect package.json main entry
-- **Fix**: Ensure `"main": "expo-router/entry"` in package.json
+### Avatar States System
+6 avatar states representing hydration levels:
+- 1.0: Fully hydrated
+- 0.8-0.9: Slightly thirsty  
+- 0.6-0.7: Getting thirsty
+- 0.4-0.5: Quite thirsty
+- 0.2-0.3: Very thirsty
+- 0.0-0.1: Severely dehydrated
 
-### NativeWind Styles Not Applying
-- **Cause**: Missing TypeScript types or stale cache
-- **Fix**: Verify `nativewind-env.d.ts` is included in tsconfig.json, clear cache with `npx expo start --clear`
+## Future Development
 
-### Build Issues
-- **Cause**: Missing scheme configuration
-- **Fix**: Add `"scheme": "quench-app"` to app.json
-
-## Asset Management
-- Avatar images stored in `assets/images/` with descriptive names
-- Use `require()` for local image imports
-- Implement `resizeMode="contain"` for proper image scaling
-
-## Code Quality Standards
-- ESLint configuration extends `eslint-config-expo`
-- Prettier with Tailwind plugin for consistent formatting
-- TypeScript strict mode enabled
-- Custom rule: `'react/display-name': 'off'`
-
-## Current Implementation Status
-- ✅ Basic app structure with Expo Router
-- ✅ Welcome screen with navigation
-- ✅ First onboarding screen with premium UI
-- ✅ NativeWind styling system functional
-- ✅ Linear gradient backgrounds
-- ✅ Custom button components with shadow effects
-- ✅ Progress bar implementation
-- ✅ Responsive layout with SafeAreaView
+The onboarding flow is complete and functional. Next development phases should focus on:
+1. Main app UI after onboarding completion
+2. Data persistence for user selections  
+3. Actual hydration goal calculations
+4. Main hydration tracking interface with real-time avatar updates
+5. Calendar view for tracking history
+6. Notification system
+7. Optional user accounts with Supabase backend integration

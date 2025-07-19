@@ -1,0 +1,146 @@
+# Quench Onboarding Screen Consistency Rules
+
+## Required UI Elements for All Onboarding Screens
+
+### 1. Background
+
+- **MUST** use: `Color(red: 0.9, green: 0.95, blue: 1.0).ignoresSafeArea()`
+- Light blue background applied to entire screen
+
+### 2. Top Section Layout
+
+- **MUST** use: `HStack(spacing: 16)` containing back button and progress bar
+- **MUST** use: `.padding(.horizontal, 20)` and `.padding(.top, 20)` on the HStack
+
+### 3. Back Button (Standard)
+
+```swift
+Button(action: {
+    // Back action will be implemented later
+}) {
+    Image(systemName: "chevron.backward")
+        .font(.system(size: 18, weight: .medium))
+        .foregroundStyle(Color.gray)
+}
+```
+
+### 4. Progress Bar (Standard)
+
+```swift
+ProgressView(value: CURRENT_STEP, total: 8.0)
+    .progressViewStyle(.linear)
+    .tint(Color(red: 0.0, green: 0.48, blue: 1.0))
+    .scaleEffect(x: 1, y: 0.8)
+```
+
+- Replace `CURRENT_STEP` with: 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0
+
+### 5. Avatar Sizing Standards
+
+- **Welcome Screen**: 180x180 frame
+- **All Other Screens**: 120x120 frame
+- **MUST** use: `.resizable()`, `.aspectRatio(contentMode: .fit)`, `.frame(width: SIZE, height: SIZE)`
+
+### 6. Typography Standards
+
+- **Main Headings**: `.font(.system(size: 28, weight: .bold, design: .default))`
+- **Welcome Screen Only**: `.font(.system(size: 32, weight: .bold, design: .default))`
+- **Subtitles**: `.font(.system(size: 17, weight: .regular, design: .default))`
+- **Button Text**: `.font(.system(size: 17, weight: .medium, design: .default))`
+
+### 7. Color Palette
+
+- **Dark Text**: `Color(red: 0.11, green: 0.11, blue: 0.12)`
+- **Light Text**: `Color(red: 0.43, green: 0.43, blue: 0.45)`
+- **Button Background**: `Color(red: 0.0, green: 0.48, blue: 1.0)`
+- **Progress Bar**: `Color(red: 0.0, green: 0.48, blue: 1.0)`
+- **Back Button**: `Color.gray`
+
+### 8. Continue Button (EXACT Implementation Required)
+
+```swift
+VStack(spacing: 0) {
+    Button(action: {
+        // Continue action will be implemented later
+    }) {
+        Text("continue")
+            .font(.system(size: 17, weight: .medium, design: .default))
+            .foregroundStyle(.white)
+            .frame(maxWidth: .infinity)
+            .frame(height: 50)
+            .background(Color(red: 0.0, green: 0.48, blue: 1.0))
+            .cornerRadius(12)
+    }
+    .padding(.horizontal, 20)
+    .padding(.bottom, 34)
+}
+```
+
+### 9. Layout Structure Template
+
+```swift
+ZStack {
+    // Background
+    Color(red: 0.9, green: 0.95, blue: 1.0)
+        .ignoresSafeArea()
+
+    VStack(spacing: 0) {
+        // Top Section
+        HStack(spacing: 16) {
+            // Back Button + Progress Bar
+        }
+        .padding(.horizontal, 20)
+        .padding(.top, 20)
+
+        Spacer()
+
+        // Center Section
+        VStack(spacing: 24) {
+            // Avatar + Content
+        }
+
+        Spacer()
+
+        // Bottom Section (Continue Button)
+        VStack(spacing: 0) {
+            // Exact button implementation
+        }
+    }
+}
+```
+
+### 10. Text Styling Requirements
+
+- **MUST** use: `.multilineTextAlignment(.center)` for all text
+- **MUST** use: `.foregroundStyle()` NOT `.foregroundColor()`
+- **MUST** use: `.lineLimit(nil)` for multi-line subtitles
+- **MUST** use: lowercase for all headings ("meet quench", "welcome to quench", etc.)
+
+### 11. Spacing Standards
+
+- **VStack main**: `spacing: 0`
+- **Center content**: `spacing: 24`
+- **Text groups**: `spacing: 12`
+- **Button container**: `spacing: 0`
+
+### 12. Screen-Specific Variations
+
+- **Welcome Screen**: 180x180 avatar, 32pt heading font
+- **All Other Screens**: 120x120 avatar, 28pt heading font
+- **Progress values**: Screen 1=1.0, Screen 2=2.0, Screen 3=3.0, etc.
+
+## Critical Rules
+
+1. **NO DEVIATIONS** from button implementation - copy exact code
+2. **NO DEVIATIONS** from progress bar styling - copy exact code
+3. **NO DEVIATIONS** from color values - use exact RGB values
+4. **NO DEVIATIONS** from spacing values - use exact numbers
+5. **CONSISTENT** avatar sizing based on screen type
+6. **CONSISTENT** typography hierarchy across all screens
+
+## Testing Requirements
+
+- Compare generated code against ContentView.swift and MeetQuenchView.swift
+- Ensure pixel-perfect consistency in button styling
+- Verify progress bar values increment correctly
+- Check avatar sizing matches screen type requirements

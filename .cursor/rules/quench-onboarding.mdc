@@ -1,0 +1,168 @@
+---
+alwaysApply: true
+---
+
+# Quench Onboarding UI Consistency Guide
+
+Reference implementations:
+
+- Welcome Screen: [ContentView.swift](mdc:quench-swift/ContentView.swift)
+- Meet Quench Screen: [MeetQuenchView.swift](mdc:quench-swift/MeetQuenchView.swift)
+
+## Core UI Elements
+
+### Background
+
+```swift
+Color(red: 0.9, green: 0.95, blue: 1.0).ignoresSafeArea()
+```
+
+### Navigation Bar
+
+Top section must use:
+
+```swift
+HStack(spacing: 16) {
+    // Back button
+    Button(action: {}) {
+        Image(systemName: "chevron.backward")
+            .font(.system(size: 18, weight: .medium))
+            .foregroundStyle(Color.gray)
+    }
+
+    // Progress bar (replace N with screen number 1-8)
+    ProgressView(value: N.0, total: 8.0)
+        .progressViewStyle(.linear)
+        .tint(Color(red: 0.0, green: 0.48, blue: 1.0))
+        .scaleEffect(x: 1, y: 0.8)
+}
+.padding(.horizontal, 20)
+.padding(.top, 20)
+```
+
+### Standard Button
+
+Must use exact implementation:
+
+```swift
+VStack(spacing: 0) {
+    Button(action: {}) {
+        Text("continue")
+            .font(.system(size: 17, weight: .medium, design: .default))
+            .foregroundStyle(.white)
+            .frame(maxWidth: .infinity)
+            .frame(height: 50)
+            .background(Color(red: 0.0, green: 0.48, blue: 1.0))
+            .cornerRadius(12)
+    }
+    .padding(.horizontal, 20)
+    .padding(.bottom, 34)
+}
+```
+
+## Typography System
+
+### Text Styles
+
+- Main Heading (Welcome): `.font(.system(size: 32, weight: .bold, design: .default))`
+- Main Heading (Other): `.font(.system(size: 28, weight: .bold, design: .default))`
+- Subtitle: `.font(.system(size: 17, weight: .regular, design: .default))`
+- Button: `.font(.system(size: 17, weight: .medium, design: .default))`
+
+### Text Colors
+
+- Dark: `Color(red: 0.11, green: 0.11, blue: 0.12)`
+- Light: `Color(red: 0.43, green: 0.43, blue: 0.45)`
+- Button/Progress: `Color(red: 0.0, green: 0.48, blue: 1.0)`
+
+### Text Requirements
+
+- Use `.foregroundStyle()` not `.foregroundColor()`
+- All headings must be lowercase
+- All text must use `.multilineTextAlignment(.center)`
+- Multi-line text must use `.lineLimit(nil)`
+
+## Layout Standards
+
+### Avatar Image
+
+Welcome Screen:
+
+```swift
+Image("quench-transparent-default")
+    .resizable()
+    .aspectRatio(contentMode: .fit)
+    .frame(width: 180, height: 180)
+```
+
+Other Screens:
+
+```swift
+Image("quench-transparent-default")
+    .resizable()
+    .aspectRatio(contentMode: .fit)
+    .frame(width: 120, height: 120)
+```
+
+### Spacing
+
+- Main VStack: `spacing: 0`
+- Content VStack: `spacing: 24`
+- Text VStack: `spacing: 12`
+- Button VStack: `spacing: 0`
+
+### Base Layout Template
+
+```swift
+ZStack {
+    // Background
+    Color(red: 0.9, green: 0.95, blue: 1.0)
+        .ignoresSafeArea()
+
+    VStack(spacing: 0) {
+        // Navigation (Back + Progress)
+        HStack(spacing: 16) { ... }
+            .padding(.horizontal, 20)
+            .padding(.top, 20)
+
+        Spacer()
+
+        // Content
+        VStack(spacing: 24) { ... }
+
+        Spacer()
+
+        // Button
+        VStack(spacing: 0) { ... }
+    }
+}
+```
+
+## Screen-Specific Rules
+
+### Welcome Screen (1/8)
+
+- Avatar size: 180x180
+- Heading size: 32pt
+- Progress: 1.0/8.0
+
+### All Other Screens (2/8 - 8/8)
+
+- Avatar size: 120x120
+- Heading size: 28pt
+- Progress: N.0/8.0 (where N is screen number)
+
+## Validation Checklist
+
+1. Button implementation matches exactly
+2. Progress bar styling matches exactly
+3. Color values use exact RGB values
+4. Spacing values match specifications
+5. Avatar size matches screen type
+6. Typography follows hierarchy
+7. All text is properly aligned and styled
+   description:
+   globs:
+   alwaysApply: false
+
+---
