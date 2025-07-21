@@ -1,9 +1,11 @@
-// Central export for all theme values
+export { colors, rgba } from './colors';
+export { typography } from './typography';
+export { spacing, margin, padding } from './spacing';
+
 import { colors, rgba } from './colors';
 import { typography } from './typography';
 import { spacing, margin, padding } from './spacing';
 
-// Combined theme object for easy importing
 export const theme = {
   colors,
   rgba,

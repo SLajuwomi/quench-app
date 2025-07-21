@@ -1,13 +1,13 @@
 export const colors = {
   // Primary Colors
-  background: 'E5F2FF',
+  background: '#E5F2FF',
   darkText: '#1C1C1E',
   lightText: '#6E6E73',
   blueAccent: '#007AFF',
 
   // Interactive State Colors
   white: '#FFFFFF',
-  gray: '8E8E93',
+  gray: '#8E8E93',
 
   // Avatar state colors (mainly text)
   fullyHydrated: '#007AFF',
