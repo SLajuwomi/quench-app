@@ -1,14 +1,17 @@
 # Step 4: Navigation Setup
 
 ## Objective
+
 Set up React Navigation to handle screen-to-screen navigation, matching the SwiftUI NavigationStack behavior. Create reusable navigation components and implement progress tracking across the 8 onboarding screens.
 
 ## Prerequisites
+
 - Completed Steps 1-3 (Project setup, concepts, design system)
 - React Navigation dependencies installed in Step 1
 - Understanding of React Navigation vs SwiftUI NavigationStack
 
 ## Key Concepts You'll Learn
+
 - **React Navigation Stack**: Screen navigation management
 - **Navigation Parameters**: Passing data between screens
 - **Custom Headers**: Hiding default headers and creating custom ones
@@ -26,7 +29,7 @@ First, create TypeScript types for your navigation structure:
 ```typescript
 // Define all the screens in your onboarding flow
 export type OnboardingStackParamList = {
-  Welcome: undefined;                    // No parameters needed
+  Welcome: undefined; // No parameters needed
   MeetQuench: undefined;
   AvatarStates: undefined;
   ReasonSelection: undefined;
@@ -55,6 +58,7 @@ export const TOTAL_SCREENS = 8;
 ```
 
 **What this does**:
+
 - Defines all screen names and their parameter types
 - Creates progress tracking matching the SwiftUI version (1/8, 2/8, etc.)
 - Provides type safety for navigation
@@ -100,28 +104,24 @@ const NavigationHeader: React.FC<NavigationHeaderProps> = ({
       {/* Back Button - matches SwiftUI back button */}
       {showBackButton ? (
         <TouchableOpacity onPress={handleBackPress} style={backButtonStyle}>
-          <Ionicons 
-            name="chevron-back" 
-            size={18} 
-            color={colors.gray} 
-          />
+          <Ionicons name="chevron-back" size={18} color={colors.gray} />
         </TouchableOpacity>
       ) : (
         <View style={backButtonStyle} />
       )}
-      
+
       {/* Progress Bar - matches SwiftUI ProgressView */}
-      <ProgressBar 
-        current={currentStep} 
-        total={totalSteps} 
-        style={{ flex: 1 }} 
+      <ProgressBar
+        current={currentStep}
+        total={totalSteps}
+        style={{ flex: 1 }}
       />
     </View>
   );
 };
 
 const backButtonStyle = {
-  width: 44,    // Consistent touch target
+  width: 44, // Consistent touch target
   height: 44,
   alignItems: 'center' as const,
   justifyContent: 'center' as const,
@@ -131,6 +131,7 @@ export default NavigationHeader;
 ```
 
 **What this does**:
+
 - Creates a reusable header component matching SwiftUI's HStack layout
 - Handles back button navigation automatically
 - Integrates with the progress bar component
@@ -153,7 +154,7 @@ interface ProgressBarProps {
 
 const ProgressBar: React.FC<ProgressBarProps> = ({ current, total, style }) => {
   const progress = current / total;
-  
+
   return (
     <View style={[progressContainer, style]}>
       <View style={[progressBar, { width: `${progress * 100}%` }]} />
@@ -181,6 +182,7 @@ export default ProgressBar;
 ```
 
 **What this does**:
+
 - Matches SwiftUI ProgressView styling exactly
 - Calculates progress percentage automatically
 - Applies the same scale transform as SwiftUI version
@@ -211,18 +213,18 @@ const ScreenTemplate: React.FC<ScreenTemplateProps> = ({
   scrollable = false,
 }) => {
   const ContentWrapper = scrollable ? ScrollView : View;
-  
+
   return (
     <SafeAreaView style={layouts.screenContainer}>
       {/* Navigation Header */}
-      <NavigationHeader 
+      <NavigationHeader
         currentStep={currentStep}
         totalSteps={TOTAL_SCREENS}
         showBackButton={showBackButton}
       />
-      
+
       {/* Screen Content */}
-      <ContentWrapper 
+      <ContentWrapper
         style={layouts.mainContent}
         contentContainerStyle={scrollable ? { flexGrow: 1 } : undefined}
       >
@@ -236,6 +238,7 @@ export default ScreenTemplate;
 ```
 
 **What this does**:
+
 - Provides consistent layout structure for all screens
 - Handles safe area automatically
 - Supports both scrollable and fixed layouts
@@ -262,7 +265,7 @@ const OnboardingNavigator: React.FC = () => {
     <Stack.Navigator
       initialRouteName="Welcome"
       screenOptions={{
-        headerShown: false,  // Hide default header (matches SwiftUI .navigationBarHidden(true))
+        headerShown: false, // Hide default header (matches SwiftUI .navigationBarHidden(true))
         gestureEnabled: true, // Enable swipe back gesture
       }}
     >
@@ -277,6 +280,7 @@ export default OnboardingNavigator;
 ```
 
 **What this does**:
+
 - Creates the main navigation structure
 - Hides default headers (matching SwiftUI behavior)
 - Enables gesture navigation for better UX
@@ -305,6 +309,7 @@ export default function App() {
 ```
 
 **What this does**:
+
 - Wraps the app with navigation context
 - Provides safe area handling
 - Sets up the main navigation flow
@@ -336,9 +341,9 @@ const WelcomeScreen: React.FC<Props> = ({ navigation }) => {
   };
 
   return (
-    <ScreenTemplate 
+    <ScreenTemplate
       currentStep={SCREEN_PROGRESS.Welcome}
-      showBackButton={false}  // First screen has no back button
+      showBackButton={false} // First screen has no back button
     >
       <View style={layouts.centeredContent}>
         <View style={layouts.textGroup}>
@@ -360,6 +365,7 @@ export default WelcomeScreen;
 ```
 
 **What this does**:
+
 - Creates a basic welcome screen using your components
 - Demonstrates navigation between screens
 - Shows how to use the screen template
@@ -392,15 +398,16 @@ const MeetQuenchScreen: React.FC<Props> = ({ navigation }) => {
   };
 
   return (
-    <ScreenTemplate 
+    <ScreenTemplate
       currentStep={SCREEN_PROGRESS.MeetQuench}
-      showBackButton={true}  // Has back button
+      showBackButton={true} // Has back button
     >
       <View style={layouts.centeredContent}>
         <View style={layouts.textGroup}>
           <Text style={textStyles.heading}>meet quench</Text>
           <Text style={textStyles.subtitle}>
-            Your new hydration buddy will change based on how much water you drink
+            Your new hydration buddy will change based on how much water you
+            drink
           </Text>
         </View>
       </View>
@@ -418,6 +425,7 @@ export default MeetQuenchScreen;
 ### 9. Test Your Navigation
 
 At this point, you should be able to:
+
 1. See the Welcome screen with no back button and 1/8 progress
 2. Tap Continue to go to Meet Quench screen
 3. See the Meet Quench screen with back button and 2/8 progress
@@ -429,16 +437,19 @@ At this point, you should be able to:
 If you encounter issues, ask these specific questions:
 
 1. **Navigation Setup**:
+
    - "How do I fix 'NavigationContainer' not found error in React Navigation?"
    - "Why is my Stack Navigator not showing screens properly?"
    - "How do I pass TypeScript types to React Navigation screens?"
 
 2. **Component Issues**:
+
    - "How do I make a reusable header component with back button in React Navigation?"
    - "Why is my progress bar not updating when navigating between screens?"
    - "How do I hide the default header in React Navigation Stack?"
 
 3. **Navigation Behavior**:
+
    - "How do I prevent going back on the first screen in React Navigation?"
    - "Why isn't my back button working in React Navigation Stack?"
    - "How do I enable swipe-to-go-back gestures?"
@@ -451,6 +462,7 @@ If you encounter issues, ask these specific questions:
 ## Google Search Queries
 
 Use these when you need additional help:
+
 - "react navigation stack navigator setup typescript"
 - "react navigation hide header custom header component"
 - "react navigation back button custom implementation"
@@ -461,12 +473,14 @@ Use these when you need additional help:
 ## Documentation Links
 
 **React Navigation**:
+
 - [React Navigation Getting Started](https://reactnavigation.org/docs/getting-started) - Basic setup
 - [Stack Navigator](https://reactnavigation.org/docs/stack-navigator) - Stack navigation guide
 - [Navigation Prop](https://reactnavigation.org/docs/navigation-prop) - Navigation methods and properties
 - [TypeScript Guide](https://reactnavigation.org/docs/typescript) - TypeScript with React Navigation
 
 **Component Documentation**:
+
 - [SafeAreaView](https://reactnative.dev/docs/safeareaview) - Safe area handling
 - [TouchableOpacity](https://reactnative.dev/docs/touchableopacity) - Button interactions
 - [Ionicons](https://icons.expo.fyi/) - Icon library for Expo
@@ -474,34 +488,41 @@ Use these when you need additional help:
 ## Common Issues and Solutions
 
 ### Issue: "NavigationContainer" not found
+
 **Solution**: Make sure you imported `NavigationContainer` from `@react-navigation/native` and wrapped your navigator.
 
 ### Issue: Back button not working
+
 **Solution**: Check that `navigation.canGoBack()` returns true and you're calling `navigation.goBack()` properly.
 
 ### Issue: Progress bar not updating
+
 **Solution**: Ensure you're passing the correct `currentStep` prop and that `SCREEN_PROGRESS` values are correct.
 
 ### Issue: TypeScript errors with navigation props
+
 **Solution**: Make sure your screen components receive the proper navigation prop type from `StackNavigationProp`.
 
 ### Issue: Screens not showing
+
 **Solution**: Verify that all screen components are properly imported and added to the Stack.Navigator.
 
 ## Validation Checklist
 
 Before proceeding to component foundation, verify:
-- [ ] Navigation between Welcome and Meet Quench screens works
-- [ ] Back button appears on Meet Quench but not Welcome
-- [ ] Progress bar shows 1/8 on Welcome, 2/8 on Meet Quench  
-- [ ] Progress bar styling matches SwiftUI version
-- [ ] Swipe-back gesture works on supported devices
-- [ ] No TypeScript errors in navigation code
-- [ ] Screen template component layouts correctly
+
+- [x] Navigation between Welcome and Meet Quench screens works
+- [x] Back button appears on Meet Quench but not Welcome
+- [x] Progress bar shows 1/8 on Welcome, 2/8 on Meet Quench
+- [x] Progress bar styling matches SwiftUI version
+- [x] Swipe-back gesture works on supported devices
+- [x] No TypeScript errors in navigation code
+- [x] Screen template component layouts correctly
 
 ## What You've Learned
 
 After completing this step, you understand:
+
 - How to set up React Navigation Stack Navigator
 - Creating reusable navigation components
 - Progress tracking across multiple screens
@@ -512,6 +533,7 @@ After completing this step, you understand:
 ## Next Steps
 
 In the next guide (`05-component-foundation.md`), you'll:
+
 - Build reusable UI components (buttons, form inputs, cards)
 - Create interactive components (sliders, radio buttons)
 - Implement avatar display components

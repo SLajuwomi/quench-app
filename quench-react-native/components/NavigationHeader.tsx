@@ -45,8 +45,8 @@ const NavigationHeader = ({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        paddingHorizontal: 20, // matches spacing.screenHorizontal
-        paddingTop: 20, // matches spacing.screenTop
+        paddingHorizontal: 20,
+        paddingTop: 20,
       }}
     >
       <ProgressBar
