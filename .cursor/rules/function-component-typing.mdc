@@ -1,0 +1,33 @@
+---
+alwaysApply: true
+---
+
+# Function Component Typing Best Practice (React + TypeScript)
+
+**Always define your props type or interface and use it directly in the function signature for React function components. Do NOT use `React.FC<Props>` or `React.FunctionComponent<Props>`, unless you specifically need implicit `children` or other features.**
+
+## Example (Best Practice)
+
+```typescript
+type MyComponentProps = {
+  foo: string;
+  bar?: number;
+};
+
+function MyComponent({ foo, bar }: MyComponentProps) {
+  // ...
+}
+```
+
+## Rationale
+
+- This is the official recommendation from the React team as of 2024.
+- It avoids implicit `children` and makes prop types explicit and clear.
+- It improves maintainability and type safety.
+
+## References
+
+- [React TypeScript Docs: Define React Component Props with Interface](https://github.com/reactjs/react.dev/blob/main/src/content/learn/typescript.md#_snippet_2)
+- [React 19 Upgrade Guide: Migrate from PropTypes to TypeScript](https://github.com/reactjs/react.dev/blob/main/src/content/blog/2024/04/25/react-19-upgrade-guide.md#_snippet_6)
+
+---
