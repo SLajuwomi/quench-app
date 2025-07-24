@@ -28,32 +28,21 @@ const NavigationHeader = ({
     }
   };
 
-  return showBackButton ? (
+  return (
     <View style={layouts.navigationContainer}>
-      <TouchableOpacity onPress={handleBackPress} style={backButtonStyle}>
-        <Ionicons name="chevron-back" size={18} color={colors.gray} />
-      </TouchableOpacity>
+      {showBackButton ? (
+        <TouchableOpacity onPress={handleBackPress} style={backButtonStyle}>
+          <Ionicons name="chevron-back" size={18} color={colors.gray} />
+        </TouchableOpacity>
+      ) : (
+        <View style={backButtonStyle} />
+      )}
       <ProgressBar
         current={currentStep}
         total={totalSteps}
-        style={{ flex: 1 }}
+        style={{ flex: 1, marginHorizontal: 16 }}
       />
-    </View>
-  ) : (
-    <View
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingHorizontal: 20,
-        paddingTop: 20,
-      }}
-    >
-      <ProgressBar
-        current={currentStep}
-        total={totalSteps}
-        style={{ flex: 1, maxWidth: 400 }} // maxWidth for large screens
-      />
+      <View style={backButtonStyle} />
     </View>
   );
 };

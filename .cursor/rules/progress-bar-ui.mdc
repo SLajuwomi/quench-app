@@ -1,0 +1,61 @@
+---
+alwaysApply: true
+---
+
+# Progress Bar UI & Usage Rule
+
+## Layout & Positioning
+
+- The progress bar must be centered horizontally in the navigation header on all onboarding screens.
+- The progress bar should not stretch to fill the entire width; instead, it should have equal space on both sides, matching the margin of the back button (or a dummy view if no back button is present).
+- The navigation header must use a three-part layout: back button (or dummy view), centered progress bar, and a dummy view to balance the layout.
+
+## Styling
+
+- The progress bar colors must match the current theme (do not change blueAccent or background colors).
+- The height and border radius remain as previously defined.
+- The progress bar container should use `flex: 1` and `marginHorizontal: 16` for consistent centering and width.
+
+## Implementation
+
+- In `NavigationHeader.tsx`, always render three children in the header row: back button (or dummy), progress bar, and dummy view.
+- In `ProgressBar.tsx`, wrap the bar in a container that accepts the `style` prop for proper flex and margin handling.
+- Do not override these layout or style rules in individual screens; all onboarding screens must use this shared header and progress bar implementation for visual consistency.
+
+## Validation Checklist
+
+1. Progress bar is always centered in the header.
+2. Equal horizontal spacing on both sides of the bar.
+3. Consistent width and appearance across all onboarding screens.
+4. No color or height changes from the theme values.
+
+---
+
+# Progress Bar UI & Usage Rule
+
+## Layout & Positioning
+
+- The progress bar must be centered horizontally in the navigation header on all onboarding screens.
+- The progress bar should not stretch to fill the entire width; instead, it should have equal space on both sides, matching the margin of the back button (or a dummy view if no back button is present).
+- The navigation header must use a three-part layout: back button (or dummy view), centered progress bar, and a dummy view to balance the layout.
+
+## Styling
+
+- The progress bar colors must match the current theme (do not change blueAccent or background colors).
+- The height and border radius remain as previously defined.
+- The progress bar container should use `flex: 1` and `marginHorizontal: 16` for consistent centering and width.
+
+## Implementation
+
+- In `NavigationHeader.tsx`, always render three children in the header row: back button (or dummy), progress bar, and dummy view.
+- In `ProgressBar.tsx`, wrap the bar in a container that accepts the `style` prop for proper flex and margin handling.
+- Do not override these layout or style rules in individual screens; all onboarding screens must use this shared header and progress bar implementation for visual consistency.
+
+## Validation Checklist
+
+1. Progress bar is always centered in the header.
+2. Equal horizontal spacing on both sides of the bar.
+3. Consistent width and appearance across all onboarding screens.
+4. No color or height changes from the theme values.
+
+---

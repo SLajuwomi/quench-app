@@ -11,8 +11,10 @@ const ProgressBar = ({ current, total, style }: ProgressBarProps) => {
   const progress = current / total;
 
   return (
-    <View style={[progressContainer, style]}>
-      <View style={[progressBar, { width: `${progress * 100}%` }]} />
+    <View style={style}>
+      <View style={progressContainer}>
+        <View style={[progressBar, { width: `${progress * 100}%` }]} />
+      </View>
     </View>
   );
 };

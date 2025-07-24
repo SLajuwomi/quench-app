@@ -1,14 +1,17 @@
 # Screen 1: Welcome Screen Migration
 
 ## Objective
+
 Migrate the SwiftUI Welcome screen to React Native, implementing the exact visual design and functionality. This screen serves as the entry point to the onboarding flow with a large avatar, welcome message, and continue button.
 
 ## Prerequisites
+
 - Completed Steps 1-5 (Setup through component foundation)
 - Avatar images copied to React Native assets folder
 - Understanding of the ScreenTemplate component
 
 ## Key Concepts You'll Learn
+
 - **Screen Implementation**: Building complete screens using foundation components
 - **Asset Management**: Using images in React Native
 - **Screen-Specific Styling**: Customizing components for specific screen needs
@@ -17,34 +20,35 @@ Migrate the SwiftUI Welcome screen to React Native, implementing the exact visua
 ## SwiftUI Reference Analysis
 
 **From `ContentView.swift`:**
+
 ```swift
 VStack(spacing: 0) {
     // Navigation (back button + progress)
     HStack(spacing: 16) { ... }
-    
+
     Spacer()
-    
+
     // Center content
     VStack(spacing: 24) {
         Image("quench-transparent-default")
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: 180, height: 180)
-        
+
         VStack(spacing: 12) {
             Text("welcome to quench")
                 .font(.system(size: 32, weight: .bold, design: .default))
                 .foregroundStyle(Color(red: 0.11, green: 0.11, blue: 0.12))
-            
+
             Text("Your hydration buddy is ready to help you stay healthy")
                 .font(.system(size: 17, weight: .regular, design: .default))
                 .foregroundStyle(Color(red: 0.43, green: 0.43, blue: 0.45))
                 .multilineTextAlignment(.center)
         }
     }
-    
+
     Spacer()
-    
+
     // Continue button
     VStack(spacing: 0) { ... }
 }
@@ -107,19 +111,16 @@ const WelcomeScreen: React.FC<Props> = ({ navigation }) => {
   };
 
   return (
-    <ScreenTemplate 
+    <ScreenTemplate
       currentStep={SCREEN_PROGRESS.Welcome}
-      showBackButton={false}  // First screen has no back button
+      showBackButton={false} // First screen has no back button
     >
       {/* Center Content - matches SwiftUI VStack with Spacers */}
       <View style={layouts.centeredContent}>
         <View style={layouts.contentSection}>
           {/* Avatar - 180x180 for welcome screen */}
-          <Avatar 
-            state="fully-hydrated" 
-            size="welcome"
-          />
-          
+          <Avatar state="fully-hydrated" size="welcome" />
+
           {/* Text Group - matches SwiftUI VStack(spacing: 12) */}
           <View style={layouts.textGroup}>
             <Text style={textStyles.welcomeHeading}>welcome to quench</Text>
@@ -131,7 +132,7 @@ const WelcomeScreen: React.FC<Props> = ({ navigation }) => {
       </View>
 
       {/* Continue Button - positioned at bottom */}
-      <Button 
+      <Button
         title="continue"
         onPress={handleContinue}
         style={continueButtonStyle}
@@ -150,6 +151,7 @@ export default WelcomeScreen;
 ```
 
 **What this code does**:
+
 - Uses `ScreenTemplate` for consistent layout and navigation
 - Implements the exact content structure from SwiftUI
 - Uses `Avatar` component with "welcome" size (180x180)
@@ -196,6 +198,7 @@ export default OnboardingNavigator;
 At this point, you should be able to:
 
 1. **Visual Verification**:
+
    - Light blue background matching SwiftUI
    - Avatar displays at 180x180 size
    - Welcome heading at 32pt with correct color
@@ -203,6 +206,7 @@ At this point, you should be able to:
    - Continue button positioned at bottom with proper styling
 
 2. **Functionality**:
+
    - No back button visible (first screen)
    - Progress bar shows 1/8 (12.5%)
    - Continue button navigates to Meet Quench screen
@@ -217,25 +221,31 @@ At this point, you should be able to:
 ## Troubleshooting Common Issues
 
 ### Issue: Avatar image not displaying
+
 **Solutions**:
+
 1. Verify image files are in `assets/avatar-states/` directory
 2. Check image file names match exactly (case-sensitive)
 3. Try using a different image format (PNG recommended)
 4. Check React Native packager has restarted after adding assets
 
 **Debug with this code:**
+
 ```typescript
 // Add this to see if images are loading
 console.log('Avatar image:', AVATAR_IMAGES['fully-hydrated']);
 ```
 
 ### Issue: Text not centered properly
+
 **Solution**: Check that `layouts.textGroup` includes `alignItems: 'center'` and text components use `textAlign: 'center'`.
 
 ### Issue: Continue button not positioned correctly
+
 **Solution**: Verify the `ScreenTemplate` component positions the button at the bottom and applies proper margins.
 
 ### Issue: Colors don't match SwiftUI
+
 **Solution**: Double-check RGB to hex conversion in your color system. Use a color picker to compare exact values.
 
 ## Question-Driven Prompts for AI Help
@@ -243,16 +253,19 @@ console.log('Avatar image:', AVATAR_IMAGES['fully-hydrated']);
 If you encounter specific issues:
 
 1. **Image Loading**:
+
    - "How do I debug React Native image loading issues with require()?"
    - "Why aren't my local images showing up in React Native components?"
    - "What image formats work best with React Native require()?"
 
 2. **Layout Issues**:
+
    - "How do I center content vertically in React Native like SwiftUI Spacer?"
    - "Why is my text not centering properly in React Native View?"
    - "How do I match exact spacing between components from SwiftUI design?"
 
 3. **Styling Problems**:
+
    - "How do I apply multiple text styles in React Native components?"
    - "Why don't my React Native colors match my SwiftUI colors exactly?"
    - "How do I create consistent button positioning across screens?"
@@ -265,6 +278,7 @@ If you encounter specific issues:
 ## Google Search Queries
 
 For additional help:
+
 - "react native image require assets not loading"
 - "react native center content vertically horizontally flexbox"
 - "react navigation stack navigator screen props typescript"
@@ -274,6 +288,7 @@ For additional help:
 ## Documentation Links
 
 **Essential References**:
+
 - [React Native Image](https://reactnative.dev/docs/image) - Image component documentation
 - [React Native Text](https://reactnative.dev/docs/text) - Text styling options
 - [React Native Flexbox](https://reactnative.dev/docs/flexbox) - Layout system
@@ -283,24 +298,26 @@ For additional help:
 
 Compare your React Native screen with the SwiftUI version:
 
-- [ ] **Background**: Light blue (#E5F2FF) fills entire screen
-- [ ] **Progress**: Shows 1/8 (12.5%) with blue color
-- [ ] **No Back Button**: Navigation area shows progress bar only
-- [ ] **Avatar**: 180x180 pixels, centered, fully hydrated state
-- [ ] **Title**: "welcome to quench" in 32pt bold, dark text
-- [ ] **Subtitle**: Properly wrapped, 17pt regular, light gray text
-- [ ] **Spacing**: Avatar to text group is 24pt, title to subtitle is 12pt
-- [ ] **Button**: Blue background, white text, proper bottom positioning
-- [ ] **Safe Areas**: Content doesn't overlap with status bar or home indicator
+- [x] **Background**: Light blue (#E5F2FF) fills entire screen
+- [x] **Progress**: Shows 1/8 (12.5%) with blue color
+- [x] **No Back Button**: Navigation area shows progress bar only
+- [x] **Avatar**: 180x180 pixels, centered, fully hydrated state
+- [x] **Title**: "welcome to quench" in 32pt bold, dark text
+- [x] **Subtitle**: Properly wrapped, 17pt regular, light gray text
+- [x] **Spacing**: Avatar to text group is 24pt, title to subtitle is 12pt
+- [x] **Button**: Blue background, white text, proper bottom positioning
+- [x] **Safe Areas**: Content doesn't overlap with status bar or home indicator
 
 ## Performance Considerations
 
 ### Image Optimization
+
 - Use PNG format for avatar images with transparency
 - Keep image file sizes reasonable (under 100KB each)
 - Consider using different image densities for different screen sizes
 
 ### Component Performance
+
 - Avatar component is stateless and efficient
 - Text components are lightweight
 - Button uses TouchableOpacity for good performance
@@ -308,6 +325,7 @@ Compare your React Native screen with the SwiftUI version:
 ## What You've Accomplished
 
 After completing this screen, you have:
+
 - Successfully migrated your first SwiftUI screen to React Native
 - Implemented proper image asset management
 - Applied your design system consistently
@@ -317,6 +335,7 @@ After completing this screen, you have:
 ## Next Steps
 
 In the next guide (`07-screen-02-meet-quench.md`), you'll:
+
 - Build the second onboarding screen with back button functionality
 - Implement 120x120 avatar sizing for non-welcome screens
 - Practice using the screen template pattern

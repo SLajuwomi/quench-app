@@ -23,9 +23,8 @@ export const layouts = StyleSheet.create({
   navigationContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing.navigationSpacing,
+    justifyContent: 'space-between',
     paddingHorizontal: spacing.screenHorizontal,
-    paddingTop: spacing.screenTop,
   } as ViewStyle,
 
   contentSection: {
@@ -56,12 +55,10 @@ export const buttons = StyleSheet.create({
     color: colors.white,
   } as TextStyle,
 
-  // Back button
   backButton: {
     padding: spacing.sm,
   } as ViewStyle,
 
-  // Disabled state
   disabledButton: {
     backgroundColor: colors.gray,
     opacity: 0.6,
