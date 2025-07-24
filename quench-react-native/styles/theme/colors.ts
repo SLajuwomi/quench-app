@@ -16,6 +16,16 @@ export const colors = {
   quiteThirsty: '#FF9500',
   veryThirsty: '#FF3B30',
   severlyDehydrated: '#FF3B30',
+
+  // more colors
+  red: '#FF3B30',
+  orange: '#FF9500',
+  green: '#34C759',
+  blue: '#007AFF',
+  purple: '#9B51E0',
+  pink: '#FF2D55',
+  yellow: '#FFCC00',
+  brown: '#A0522D',
 } as const;
 
 // Helper function to create rgba colors with opacity

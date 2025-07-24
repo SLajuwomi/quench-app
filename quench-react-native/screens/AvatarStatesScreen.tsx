@@ -75,6 +75,7 @@ const AvatarStatesScreen = ({ navigation }: Props) => {
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: spacing.lg,
+    paddingTop: 40,
   };
 
   const textContainerStyle: ViewStyle = {
@@ -104,22 +105,11 @@ const AvatarStatesScreen = ({ navigation }: Props) => {
       showBackButton={true}
     >
       <View style={contentStyle}>
-        <View style={textContainerStyle}>
-          <Text style={[textStyles.heading, { color: colors.darkText }]}>
-            this is quench at different levels of hydration
-          </Text>
-        </View>
-
         <Avatar state={avatarData.state} size="other" />
 
         <View style={textContainerStyle}>
-          <Text
-            style={[
-              textStyles.subtitle,
-              { color: avatarData.color, marginTop: spacing.md },
-            ]}
-          >
-            {avatarData.text}
+          <Text style={[textStyles.heading, { color: colors.darkText }]}>
+            see for yourself
           </Text>
         </View>
 
@@ -146,7 +136,7 @@ const AvatarStatesScreen = ({ navigation }: Props) => {
             maximumValue={1.0}
             step={0.01}
             leftLabel="dehydrated"
-            rightLabel="hydrated"
+            rightLabel="fully quenched"
             stateColor={avatarData.color}
           />
         </View>

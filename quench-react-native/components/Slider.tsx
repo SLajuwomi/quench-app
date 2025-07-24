@@ -106,12 +106,12 @@ function Slider({
             marginTop: 8,
           }}
         >
-          <Text style={{ color: colors.gray, fontSize: 15, fontWeight: '500' }}>
+          <Text style={{ color: colors.red, fontSize: 15, fontWeight: '500' }}>
             {leftLabel}
           </Text>
           <Text
             style={{
-              color: colors.blueAccent,
+              color: colors.green,
               fontSize: 15,
               fontWeight: '500',
             }}
