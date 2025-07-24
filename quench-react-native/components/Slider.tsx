@@ -1,6 +1,7 @@
+import React from 'react';
 import { View, Text, ViewStyle, TextStyle } from 'react-native';
-import SliderComponent from '@react-native-community/slider';
-import { colors, spacing, typography } from '../styles/theme';
+import { Slider as SliderComponent } from '@miblanchard/react-native-slider';
+import { colors, rgba, spacing, typography } from '../styles/theme';
 
 interface SliderProps {
   value: number;
@@ -8,8 +9,9 @@ interface SliderProps {
   minimumValue: number;
   maximumValue: number;
   step?: number;
-  label?: string;
-  formatValue?: (value: number) => string;
+  leftLabel?: string;
+  rightLabel?: string;
+  stateColor?: string;
   style?: ViewStyle;
 }
 
@@ -18,69 +20,108 @@ function Slider({
   onValueChange,
   minimumValue,
   maximumValue,
-  step = 1,
-  label,
-  formatValue,
+  step = 0.01, // Now safe to use small step values
+  leftLabel = '',
+  rightLabel = '',
+  stateColor = colors.blueAccent,
   style,
 }: SliderProps) {
-  const displayValue = formatValue ? formatValue(value) : value.toString();
+  // Ensure value is always a valid number and within bounds
+  const safeValue = Math.max(
+    minimumValue,
+    Math.min(maximumValue, value || minimumValue)
+  );
+
+  const handleValueChange = (values: number[]) => {
+    // @miblanchard/react-native-slider returns an array
+    const newValue = values[0];
+    if (typeof newValue === 'number' && !isNaN(newValue)) {
+      onValueChange(newValue);
+    }
+  };
+
+  const containerStyle: ViewStyle = {
+    width: '100%',
+    paddingHorizontal: spacing.md,
+    ...style,
+  };
+
+  const labelContainerStyle: ViewStyle = {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: spacing.sm,
+  };
+
+  const labelStyle: TextStyle = {
+    fontSize: 15, // Using a specific size instead of typography.sizes.sm
+    color: colors.lightText, // Changed from colors.textSecondary to colors.lightText
+    fontWeight: '500', // Using specific weight instead of typography.weights.medium
+  };
+
+  const sliderContainerStyle: ViewStyle = {
+    height: 40,
+    justifyContent: 'center',
+  };
 
   return (
-    <View style={[sliderContainer, style]}>
-      {label && <Text style={sliderLabel}>{label}</Text>}
-      <Text style={sliderValue}>{displayValue}</Text>
-      <SliderComponent
-        style={sliderStyle}
-        value={value}
-        onValueChange={onValueChange}
-        minimumValue={minimumValue}
-        maximumValue={maximumValue}
-        step={step}
-        minimumTrackTintColor={colors.blueAccent}
-        maximumTrackTintColor={`${colors.blueAccent}33`}
-        thumbTintColor={colors.blueAccent}
-      />
-      <View style={rangeLabels}>
-        <Text style={rangeLabel}>{minimumValue}</Text>
-        <Text style={rangeLabel}>{maximumValue}</Text>
+    <View style={containerStyle}>
+      <View style={sliderContainerStyle}>
+        <SliderComponent
+          value={[safeValue]} // @miblanchard expects array format
+          onValueChange={handleValueChange}
+          minimumValue={minimumValue}
+          maximumValue={maximumValue}
+          step={step}
+          thumbStyle={{
+            backgroundColor: colors.white,
+            width: 24,
+            height: 24,
+            borderRadius: 12,
+            shadowColor: colors.darkText,
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.2,
+            shadowRadius: 4,
+            elevation: 4,
+          }}
+          trackStyle={{
+            height: 6,
+            borderRadius: 3,
+            backgroundColor: 'rgba(72, 69, 69, 0.1)',
+          }}
+          minimumTrackStyle={{
+            backgroundColor: stateColor,
+            height: 6,
+            borderRadius: 3,
+          }}
+          animateTransitions={true}
+          animationType="spring"
+        />
       </View>
+      {(leftLabel || rightLabel) && (
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: '100%',
+            marginTop: 8,
+          }}
+        >
+          <Text style={{ color: colors.gray, fontSize: 15, fontWeight: '500' }}>
+            {leftLabel}
+          </Text>
+          <Text
+            style={{
+              color: colors.blueAccent,
+              fontSize: 15,
+              fontWeight: '500',
+            }}
+          >
+            {rightLabel}
+          </Text>
+        </View>
+      )}
     </View>
   );
 }
-
-const sliderContainer: ViewStyle = {
-  width: '100%',
-  alignItems: 'center',
-  gap: spacing.md,
-};
-
-const sliderLabel: TextStyle = {
-  ...typography.subtitle,
-  color: colors.darkText,
-  marginBottom: spacing.xs,
-};
-
-const sliderValue: TextStyle = {
-  ...typography.largeNumber,
-  color: colors.blueAccent,
-  marginBottom: spacing.xs,
-};
-
-const sliderStyle: ViewStyle = {
-  width: '100%',
-  height: 40,
-};
-
-const rangeLabels: ViewStyle = {
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  width: '100%',
-  marginTop: spacing.xs,
-};
-
-const rangeLabel: TextStyle = {
-  ...typography.caption,
-  color: colors.lightText,
-};
 
 export default Slider;
