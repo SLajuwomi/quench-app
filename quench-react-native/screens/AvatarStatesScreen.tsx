@@ -81,12 +81,13 @@ const AvatarStatesScreen = ({ navigation }: Props) => {
   const textContainerStyle: ViewStyle = {
     alignItems: 'center',
     marginBottom: spacing.xl,
+    marginTop: spacing.md, // Added spacing between avatar and text
   };
 
   const sliderBoxStyle: ViewStyle = {
     backgroundColor: colors.white,
     borderRadius: 20,
-    padding: 24,
+    padding: 24, // Reduced from 24 to make more compact
     alignItems: 'center',
     shadowColor: colors.darkText,
     shadowOffset: { width: 0, height: 2 },

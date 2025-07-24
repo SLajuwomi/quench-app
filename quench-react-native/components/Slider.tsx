@@ -42,80 +42,67 @@ function Slider({
 
   const containerStyle: ViewStyle = {
     width: '100%',
-    paddingHorizontal: spacing.md,
     ...style,
   };
 
-  const labelContainerStyle: ViewStyle = {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: spacing.sm,
-  };
-
   const labelStyle: TextStyle = {
-    fontSize: 15, // Using a specific size instead of typography.sizes.sm
-    color: colors.lightText, // Changed from colors.textSecondary to colors.lightText
-    fontWeight: '500', // Using specific weight instead of typography.weights.medium
+    fontSize: 13,
+    color: colors.lightText,
+    fontWeight: '500',
   };
 
-  const sliderContainerStyle: ViewStyle = {
-    height: 40,
+  const sliderRowStyle: ViewStyle = {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    height: 24,
+  };
+
+  const sliderTrackContainerStyle: ViewStyle = {
+    flex: 1,
+    marginHorizontal: 8,
+    height: 24,
     justifyContent: 'center',
   };
 
   return (
     <View style={containerStyle}>
-      <View style={sliderContainerStyle}>
-        <SliderComponent
-          value={[safeValue]} // @miblanchard expects array format
-          onValueChange={handleValueChange}
-          minimumValue={minimumValue}
-          maximumValue={maximumValue}
-          step={step}
-          thumbStyle={{
-            backgroundColor: colors.white,
-            width: 24,
-            height: 24,
-            borderRadius: 12,
-            shadowColor: colors.darkText,
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.2,
-            shadowRadius: 4,
-            elevation: 4,
-          }}
-          trackStyle={{
-            height: 6,
-            borderRadius: 3,
-            backgroundColor: 'rgba(72, 69, 69, 0.1)',
-          }}
-          minimumTrackStyle={{
-            backgroundColor: stateColor,
-            height: 6,
-            borderRadius: 3,
-          }}
-          animateTransitions={true}
-          animationType="spring"
-        />
-      </View>
       {(leftLabel || rightLabel) && (
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            width: '100%',
-            marginTop: 8,
-          }}
-        >
-          <Text style={{ color: colors.red, fontSize: 15, fontWeight: '500' }}>
-            {leftLabel}
-          </Text>
-          <Text
-            style={{
-              color: colors.green,
-              fontSize: 15,
-              fontWeight: '500',
-            }}
-          >
+        <View style={sliderRowStyle}>
+          <Text style={[labelStyle, { color: colors.red }]}>{leftLabel}</Text>
+          <View style={sliderTrackContainerStyle}>
+            <SliderComponent
+              value={[safeValue]}
+              onValueChange={handleValueChange}
+              minimumValue={minimumValue}
+              maximumValue={maximumValue}
+              step={step}
+              thumbStyle={{
+                backgroundColor: colors.white,
+                width: 20,
+                height: 20,
+                borderRadius: 10,
+                shadowColor: colors.darkText,
+                shadowOffset: { width: 0, height: 1 },
+                shadowOpacity: 0.2,
+                shadowRadius: 2,
+                elevation: 2,
+              }}
+              trackStyle={{
+                height: 4,
+                borderRadius: 2,
+                backgroundColor: 'rgba(72, 69, 69, 0.1)',
+              }}
+              minimumTrackStyle={{
+                backgroundColor: stateColor,
+                height: 4,
+                borderRadius: 2,
+              }}
+              animateTransitions={true}
+              animationType="spring"
+            />
+          </View>
+          <Text style={[labelStyle, { color: colors.green }]}>
             {rightLabel}
           </Text>
         </View>
