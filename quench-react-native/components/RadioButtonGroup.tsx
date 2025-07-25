@@ -5,6 +5,7 @@ import {
   ViewStyle,
   TextStyle,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing, typography } from '../styles/theme';
 
 export interface RadioOption {
@@ -15,48 +16,66 @@ export interface RadioOption {
 
 interface RadioButtonGroupProps {
   options: RadioOption[];
-  selectedId?: string;
+  /**
+   * Array of selected option IDs for multi-select. If you want single-select, pass an array with one item.
+   */
+  selectedIds?: string[];
   onSelect: (id: string) => void;
   style?: ViewStyle;
 }
 
 function RadioButtonGroup({
   options,
-  selectedId,
+  selectedIds,
   onSelect,
   style,
 }: RadioButtonGroupProps) {
   return (
     <View style={[groupContainer, style]}>
-      {options.map((option) => (
-        <TouchableOpacity
-          key={option.id}
-          style={[optionContainer, selectedId === option.id && selectedOption]}
-          onPress={() => onSelect(option.id)}
-          activeOpacity={0.7}
-        >
-          <View style={radioContainer}>
-            <View
-              style={[
-                radioButton,
-                selectedId === option.id && selectedRadioButton,
-              ]}
-            >
-              {selectedId === option.id && <View style={radioButtonInner} />}
+      {options.map((option) => {
+        const isSelected = selectedIds?.includes(option.id);
+        return (
+          <TouchableOpacity
+            key={option.id}
+            style={[
+              optionContainer,
+              isSelected ? selectedOption : unselectedOption,
+            ]}
+            onPress={() => onSelect(option.id)}
+            activeOpacity={0.7}
+          >
+            <View style={radioRow}>
+              <View style={textContainer}>
+                <Text
+                  style={[
+                    optionLabel,
+                    isSelected ? selectedLabel : unselectedLabel,
+                  ]}
+                >
+                  {option.label}
+                </Text>
+                {option.description && (
+                  <Text style={optionDescription}>{option.description}</Text>
+                )}
+              </View>
+              <View style={radioIconContainer}>
+                {isSelected ? (
+                  <View style={selectedRadioOuter}>
+                    <Ionicons
+                      name="checkmark"
+                      size={18}
+                      color={colors.blueAccent}
+                      style={{ alignSelf: 'center' }}
+                    />
+                  </View>
+                ) : (
+                  <View style={unselectedRadioOuter} />
+                )}
+              </View>
             </View>
-            <View style={textContainer}>
-              <Text
-                style={[optionLabel, selectedId === option.id && selectedLabel]}
-              >
-                {option.label}
-              </Text>
-              {option.description && (
-                <Text style={optionDescription}>{option.description}</Text>
-              )}
-            </View>
-          </View>
-        </TouchableOpacity>
-      ))}
+          </TouchableOpacity>
+        );
+      })}
     </View>
   );
 }
@@ -66,64 +85,80 @@ const groupContainer: ViewStyle = {
 };
 
 const optionContainer: ViewStyle = {
-  backgroundColor: 'transparent',
   borderRadius: spacing.md,
-  padding: spacing.lg,
+  paddingVertical: spacing.lg,
+  paddingHorizontal: spacing.lg,
+  flexDirection: 'row',
+  alignItems: 'center',
+  minWidth: '95%',
+};
+
+const selectedOption: ViewStyle = {
+  backgroundColor: colors.blueAccent,
+  borderWidth: 0,
+};
+
+const unselectedOption: ViewStyle = {
+  backgroundColor: 'transparent',
   borderWidth: 1,
   borderColor: `${colors.lightText}33`,
 };
 
-const selectedOption: ViewStyle = {
-  backgroundColor: `${colors.blueAccent}10`,
-  borderColor: colors.blueAccent,
-};
-
-const radioContainer: ViewStyle = {
+const radioRow: ViewStyle = {
   flexDirection: 'row',
-  alignItems: 'flex-start',
-  gap: spacing.md,
-};
-
-const radioButton: ViewStyle = {
-  width: 20,
-  height: 20,
-  borderRadius: 10,
-  borderWidth: 2,
-  borderColor: colors.lightText,
-  justifyContent: 'center',
   alignItems: 'center',
-  marginTop: 2,
-};
-
-const selectedRadioButton: ViewStyle = {
-  borderColor: colors.blueAccent,
-};
-
-const radioButtonInner: ViewStyle = {
-  width: 8,
-  height: 8,
-  borderRadius: 4,
-  backgroundColor: colors.blueAccent,
+  justifyContent: 'space-between',
+  width: '100%',
 };
 
 const textContainer: ViewStyle = {
   flex: 1,
+  justifyContent: 'center',
 };
 
 const optionLabel: TextStyle = {
   ...typography.subtitle,
-  color: colors.darkText,
   fontWeight: '500',
 };
 
 const selectedLabel: TextStyle = {
-  color: colors.blueAccent,
+  color: colors.white,
+  fontWeight: '600',
+};
+
+const unselectedLabel: TextStyle = {
+  color: colors.darkText,
+  fontWeight: '500',
 };
 
 const optionDescription: TextStyle = {
   ...typography.caption,
   color: colors.lightText,
   marginTop: spacing.xs,
+};
+
+const radioIconContainer: ViewStyle = {
+  marginLeft: spacing.lg,
+  justifyContent: 'center',
+  alignItems: 'center',
+};
+
+const selectedRadioOuter: ViewStyle = {
+  width: 24,
+  height: 24,
+  borderRadius: 12,
+  backgroundColor: colors.white,
+  justifyContent: 'center',
+  alignItems: 'center',
+};
+
+const unselectedRadioOuter: ViewStyle = {
+  width: 24,
+  height: 24,
+  borderRadius: 12,
+  borderWidth: 2,
+  borderColor: colors.lightText,
+  backgroundColor: 'transparent',
 };
 
 export default RadioButtonGroup;

@@ -1,14 +1,17 @@
 # Screen 4: Reason Selection Screen Migration
 
 ## Objective
+
 Migrate the SwiftUI Reason Selection screen to React Native, implementing radio button functionality for single-choice selection with form validation. The continue button should be disabled until a selection is made.
 
 ## Prerequisites
+
 - Completed Screens 1-3 (Welcome through Avatar States)
 - Understanding of React Native state management
 - Familiarity with RadioButtonGroup component from foundation
 
 ## Key Concepts You'll Learn
+
 - **Radio Button Groups**: Single-selection from multiple options
 - **Form Validation**: Enabling/disabling buttons based on user input
 - **Option Arrays**: Managing selectable options with data structures
@@ -17,12 +20,13 @@ Migrate the SwiftUI Reason Selection screen to React Native, implementing radio 
 ## SwiftUI Reference Analysis
 
 **From `ReasonSelectionView.swift`:**
+
 ```swift
 @State private var selectedReason: String?
 
 let reasons = [
     "Improve my energy levels",
-    "Better skin health", 
+    "Better skin health",
     "Reduce headaches",
     "Better focus and concentration",
     "Help with weight loss",
@@ -33,11 +37,11 @@ VStack(spacing: 24) {
     VStack(spacing: 12) {
         Text("why do you want to drink more water?")
             .font(.system(size: 28, weight: .bold, design: .default))
-        
+
         Text("Select your main motivation")
             .font(.system(size: 17, weight: .regular, design: .default))
     }
-    
+
     VStack(spacing: 12) {
         ForEach(reasons, id: \.self) { reason in
             Button(action: { selectedReason = reason }) {
@@ -48,14 +52,14 @@ VStack(spacing: 24) {
                         .fill(selectedReason == reason ? Color.blue : Color.clear)
                         .frame(width: 20, height: 20)
                         .overlay(
-                            selectedReason == reason ? 
+                            selectedReason == reason ?
                             Circle().fill(Color.white).frame(width: 8, height: 8) : nil
                         )
-                    
+
                     Text(reason)
                         .font(.system(size: 17, weight: .medium, design: .default))
                         .foregroundStyle(selectedReason == reason ? Color.blue : Color.primary)
-                    
+
                     Spacer()
                 }
             }
@@ -79,7 +83,12 @@ import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { OnboardingStackParamList, SCREEN_PROGRESS } from '../types/navigation';
-import { ScreenTemplate, Button, RadioButtonGroup, RadioOption } from '../components';
+import {
+  ScreenTemplate,
+  Button,
+  RadioButtonGroup,
+  RadioOption,
+} from '../components';
 import { layouts, textStyles } from '../styles/components';
 
 type ReasonSelectionScreenNavigationProp = StackNavigationProp<
@@ -120,7 +129,9 @@ const HYDRATION_REASONS: RadioOption[] = [
 ];
 
 const ReasonSelectionScreen: React.FC<Props> = ({ navigation }) => {
-  const [selectedReasonId, setSelectedReasonId] = useState<string | undefined>();
+  const [selectedReasonId, setSelectedReasonId] = useState<
+    string | undefined
+  >();
 
   const handleContinue = () => {
     // In a real app, you might save the selection
@@ -136,7 +147,7 @@ const ReasonSelectionScreen: React.FC<Props> = ({ navigation }) => {
   const continueDisabled = !selectedReasonId;
 
   return (
-    <ScreenTemplate 
+    <ScreenTemplate
       currentStep={SCREEN_PROGRESS.ReasonSelection}
       showBackButton={true}
     >
@@ -148,11 +159,9 @@ const ReasonSelectionScreen: React.FC<Props> = ({ navigation }) => {
             <Text style={textStyles.heading}>
               why do you want to drink more water?
             </Text>
-            <Text style={textStyles.subtitle}>
-              Select your main motivation
-            </Text>
+            <Text style={textStyles.subtitle}>Select your main motivation</Text>
           </View>
-          
+
           {/* Radio Button Group */}
           <RadioButtonGroup
             options={HYDRATION_REASONS}
@@ -164,7 +173,7 @@ const ReasonSelectionScreen: React.FC<Props> = ({ navigation }) => {
       </View>
 
       {/* Continue Button - disabled until selection made */}
-      <Button 
+      <Button
         title="continue"
         onPress={handleContinue}
         disabled={continueDisabled}
@@ -190,6 +199,7 @@ export default ReasonSelectionScreen;
 ```
 
 **What this code does**:
+
 - Defines exact reason options matching SwiftUI version
 - Uses `RadioButtonGroup` component for single selection
 - Implements form validation - button disabled until selection made
@@ -202,7 +212,13 @@ export default ReasonSelectionScreen;
 
 ```typescript
 import React from 'react';
-import { View, Text, TouchableOpacity, ViewStyle, TextStyle } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ViewStyle,
+  TextStyle,
+} from 'react-native';
 import { colors, spacing, typography } from '../styles/theme';
 
 export interface RadioOption {
@@ -228,7 +244,7 @@ const RadioButtonGroup: React.FC<RadioButtonGroupProps> = ({
     <View style={[groupContainer, style]}>
       {options.map((option, index) => {
         const isSelected = selectedId === option.id;
-        
+
         return (
           <TouchableOpacity
             key={option.id}
@@ -243,21 +259,13 @@ const RadioButtonGroup: React.FC<RadioButtonGroupProps> = ({
           >
             <View style={radioContainer}>
               {/* Custom Radio Button Circle */}
-              <View style={[
-                radioButton,
-                isSelected && selectedRadioButton,
-              ]}>
-                {isSelected && (
-                  <View style={radioButtonInner} />
-                )}
+              <View style={[radioButton, isSelected && selectedRadioButton]}>
+                {isSelected && <View style={radioButtonInner} />}
               </View>
-              
+
               {/* Text Content */}
               <View style={textContainer}>
-                <Text style={[
-                  optionLabel,
-                  isSelected && selectedLabel,
-                ]}>
+                <Text style={[optionLabel, isSelected && selectedLabel]}>
                   {option.label}
                 </Text>
                 {option.description && (
@@ -332,6 +340,7 @@ const textContainer: ViewStyle = {
 };
 
 const optionLabel: TextStyle = {
+  backgroundColor: 'red',
   ...typography.subtitle,
   color: colors.darkText,
   fontWeight: '500',
@@ -339,6 +348,7 @@ const optionLabel: TextStyle = {
 };
 
 const selectedLabel: TextStyle = {
+  backgroundColor: 'red',
   color: colors.blueAccent,
   fontWeight: '600',
 };
@@ -354,6 +364,7 @@ export default RadioButtonGroup;
 ```
 
 **What this enhanced version adds**:
+
 - Card-like appearance with shadow and rounded corners
 - Better visual hierarchy with borders between options
 - Selected state background highlighting
@@ -375,7 +386,7 @@ const variantStyles: Record<ButtonVariant, ViewStyle> = {
     borderColor: colors.blueAccent,
   },
   disabled: {
-    backgroundColor: colors.lightText,  // More muted than gray
+    backgroundColor: colors.lightText, // More muted than gray
     opacity: 0.6,
   },
 };
@@ -403,7 +414,7 @@ const variantTextStyles: Record<ButtonVariant, TextStyle> = {
 import ReasonSelectionScreen from '../screens/ReasonSelectionScreen';
 
 // Add to Stack.Navigator:
-<Stack.Screen name="ReasonSelection" component={ReasonSelectionScreen} />
+<Stack.Screen name="ReasonSelection" component={ReasonSelectionScreen} />;
 ```
 
 **Create placeholder for next screen:**
@@ -419,7 +430,7 @@ import { layouts, textStyles } from '../styles/components';
 
 const DidYouKnowScreen: React.FC = () => {
   return (
-    <ScreenTemplate 
+    <ScreenTemplate
       currentStep={SCREEN_PROGRESS.DidYouKnow}
       showBackButton={true}
     >
@@ -439,12 +450,14 @@ export default DidYouKnowScreen;
 Your Reason Selection screen should now:
 
 1. **Radio Button Selection**:
+
    - Tap any option to select it
    - Only one option can be selected at a time
    - Visual feedback shows selected state (blue styling)
    - Cards have proper shadows and visual hierarchy
 
 2. **Form Validation**:
+
    - Continue button starts disabled (gray appearance)
    - Button becomes enabled (blue) after making selection
    - Button press only works when selection is made
@@ -457,15 +470,19 @@ Your Reason Selection screen should now:
 ## Troubleshooting Common Issues
 
 ### Issue: Radio buttons not showing selection state
+
 **Debug Steps**:
+
 1. Add `console.log('Selected ID:', selectedReasonId)` in component
 2. Verify `onSelect` function is being called
 3. Check that `selectedId` prop is passed to RadioButtonGroup
 
 ### Issue: Continue button not enabling after selection
+
 **Solution**: Verify the disabled logic: `const continueDisabled = !selectedReasonId;`
 
 ### Issue: Radio button styling not matching design
+
 **Solution**: Check that your color constants are correct and shadow properties are properly applied for your platform.
 
 ## Question-Driven Prompts for AI Help
@@ -473,11 +490,13 @@ Your Reason Selection screen should now:
 For form validation and selection:
 
 1. **Selection Logic**:
+
    - "How do I implement single-selection radio buttons in React Native?"
    - "Why isn't my button enabling when form state changes in React Native?"
    - "How do I manage selection state across multiple components?"
 
 2. **Styling Issues**:
+
    - "How do I create card-like styling with shadows in React Native?"
    - "Why aren't my TouchableOpacity components showing active states properly?"
    - "How do I create proper visual hierarchy in React Native lists?"
@@ -490,6 +509,7 @@ For form validation and selection:
 ## Google Search Queries
 
 For additional help:
+
 - "react native radio button group single selection"
 - "react native button disabled state styling"
 - "react native form validation enable disable buttons"
@@ -513,6 +533,7 @@ Compare with SwiftUI ReasonSelectionView:
 ## What You've Accomplished
 
 After completing this screen, you have:
+
 - Implemented single-selection radio button functionality
 - Created form validation with conditional button enabling
 - Built card-based UI with proper visual hierarchy
@@ -522,6 +543,7 @@ After completing this screen, you have:
 ## Next Steps
 
 In the next guide (`10-screen-05-did-you-know.md`), you'll:
+
 - Create grid layouts for multiple content cards
 - Implement educational content display
 - Work with emoji icons and structured data
